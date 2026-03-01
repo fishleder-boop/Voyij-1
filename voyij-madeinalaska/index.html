@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+    ================================================================
+    VOYIJ — MADE IN ALASKA  (/madeinalaska)
+    ================================================================
+    Stack: Alpine.js · Tailwind CSS CDN · Swiper.js · Rubik/Playfair
+    Design tokens extracted from code.docx (Voyij homepage source).
+
+    API INTEGRATION POINTS
+    ──────────────────────
+    1. Replace MOCK_PRODUCTS (bottom <script>) with:
+         @json($madeInAlaskaProducts)   ← Blade / Livewire
+       or fetch('/api/products?madeInAlaska=true')
+
+    2. Replace MOCK_STORES with:
+         @json($madeInAlaskaStores)
+       or fetch('/api/stores?hasMadeInAlaskaProducts=true')
+
+    3. Replace MOCK_STORIES with:
+         @json($blogPosts->where('tag','made-in-alaska'))
+
+    4. Permit status refresh:
+         fetch('/api/permit-status?permits=MIA-...')
+         → { "MIA-2024-0142": "active" }
+
+    5. Header/footer: replace with Blade includes:
+         @include('layouts.header')
+         @include('layouts.footer')
+
+    6. MIA emblem: stored at /public/images/made-in-alaska/made-in-alaska.png
+       Source: Alaska Glacial Certifications (cdn.shopify.com/…/made-in-alaska-F.png)
+
+    TO RUN LOCALLY:
+      php artisan serve  → http://localhost:8000/madeinalaska
+      (Or open index.html directly in a browser for the design preview.)
+    ================================================================
+  -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9">
+  <meta name="robots" content="max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <title>Made In Alaska – Shop Eligible Products | Voyij.com</title>
+  <meta name="description" content="Shop products eligible for the Made In Alaska program on Voyij. Look for the Made In Alaska mark to discover Alaska-made goods you can order year-round.">
+  <link rel="canonical" href="https://voyij.com/madeinalaska">
+  <link href="https://voyij.com/images/favicon.webp" rel="shortcut icon">
+
+  <meta property="og:title" content="Made In Alaska | Voyij.com">
+  <meta property="og:description" content="Shop Alaska-made products with active Made In Alaska program eligibility.">
+  <meta property="og:url" content="https://voyij.com/madeinalaska">
+  <meta property="og:site_name" content="Voyij">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@voyijtravel">
+
+  <!-- Font Awesome 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+
+  <!-- Voyij App CSS (production) -->
+  <link rel="stylesheet" href="https://voyij.com/build/assets/app-Dm__biB-.css">
+
+  <!-- Google Fonts: Rubik + Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+  <!-- Orange Squash Demo (Voyij brand cursive) -->
+  <style>
+    @font-face {
+      font-family: 'Orange Squash Demo';
+      src: url('https://voyij.com/fonts/Orange%20Squash.woff') format('woff');
+      font-weight: normal; font-style: normal; font-display: swap;
+    }
+  </style>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Exact Voyij Tailwind config extracted from code.docx */
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: { '3xl': '0 10px 15px 0 rgba(0, 0, 0, 0.2)' },
+          colors: {
+            primary: '#7fbcb4',
+            border: '#dcdcdc',
+            gray: {
+              50:'#f9fafb', 100:'#f3f4f6', 200:'#e5e7eb', 300:'#d1d5db',
+              400:'#9ca3af', 500:'#6b7280', 600:'#4b5563', 700:'#374151',
+              800:'#1f2937', 900:'#111827', 950:'#030712',
+            },
+          },
+          screens: { 'sm':'576px','md':'768px','lg':'992px','xl':'1200px','2xl':'1400px' },
+          fontFamily: {
+            'sans': ["Rubik","ui-sans-serif","system-ui","-apple-system","BlinkMacSystemFont","Segoe UI","Helvetica Neue","Arial","Noto Sans","sans-serif"],
+            rubik: ["Rubik","sans-serif"],
+            'orange-squash': ["Orange Squash Demo","cursive"],
+            custom: ["serif"],
+          },
+          gridTemplateColumns: { '7/12':'58.333333%','5/12':'41.666667%' },
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Voyij styles (extracted from code.docx) -->
+  <style>
+    [x-cloak] { display: none !important; }
+    body { zoom: 0.9; }
+
+    /* Section title with gold SVG underline */
+    .section-title {
+      font-family: "Orange Squash Demo", cursive;
+      position: relative; display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      display: block; width: 100%; height: 8px; margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M0,4 Q50,0 100,4 Q150,8 200,4' stroke='%23D8A653' stroke-width='2.5' fill='none'/%3E%3C/svg%3E");
+      background-size: cover; background-repeat: no-repeat;
+    }
+    .real-emphasis {
+      font-family: "Orange Squash Demo", cursive;
+      color: #024B5B;
+    }
+
+    /* MIA page custom styles */
+    .mia-hero-bg {
+      background: linear-gradient(135deg, #024B5B 0%, #013844 50%, #022e38 100%);
+    }
+    .mia-badge {
+      background: #024B5B;
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .mia-badge-sm {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
+    .permit-chip {
+      font-family: 'SF Mono', 'Fira Mono', 'Courier New', monospace;
+      font-size: 10px; font-weight: 600;
+      background: #e6f2f1; color: #024B5B;
+      border-radius: 4px; padding: 2px 7px;
+      letter-spacing: 0.03em;
+    }
+    .filter-chip {
+      font-size: 13px; font-weight: 500;
+      padding: 6px 16px; border-radius: 9999px;
+      border: 1.5px solid #dcdcdc;
+      background: white; color: #6b7280;
+      cursor: pointer; white-space: nowrap;
+      transition: all .15s;
+    }
+    .filter-chip:hover { border-color: #024B5B; color: #024B5B; }
+    .filter-chip.active { background: #024B5B; border-color: #024B5B; color: white; }
+
+    .product-card { transition: box-shadow .2s, transform .2s; }
+    .product-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.12); transform: translateY(-3px); }
+    .product-card:hover .product-img { transform: scale(1.05); }
+    .product-img { transition: transform .4s ease; }
+
+    .story-card { transition: box-shadow .2s, transform .2s; }
+    .story-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .store-card { transition: box-shadow .2s, transform .2s; }
+    .store-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+
+    /* View toggle pill */
+    .view-toggle { background: #f3f4f6; border: 1.5px solid #dcdcdc; border-radius: 9999px; padding: 3px; }
+    .view-toggle-btn { padding: 6px 20px; border-radius: 9999px; font-size: 13px; font-weight: 500; color: #6b7280; cursor: pointer; transition: all .15s; }
+    .view-toggle-btn.active { background: white; color: #024B5B; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+    /* Swiper overrides (match Voyij) */
+    .swiper-button-next, .swiper-button-prev { color: #024B5B !important; }
+    .swiper-pagination-bullet-active { background: #024B5B !important; }
+
+    /* Trust card accent bar */
+    .trust-card-accent { position: relative; }
+    .trust-card-accent::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #7fbcb4; border-radius: 8px 8px 0 0; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+<!-- ================================================================
+     VOYIJ HEADER — extracted from code.docx
+     In production: @include('layouts.header') or {include file="header.tpl"}
+     ================================================================ -->
+<header class="sticky inset-0 z-50">
+
+  <!-- Announcement bar -->
+  <div x-data="{ swiper: null, swiperConfig: { autoplay: { delay: 5000 }, disableOnInteraction: false, pauseOnMouseEnter: true, speed: 600, slidesPerView: 1, spaceBetween: 0, loop: true, centeredSlides: true } }"
+       x-init="swiper = new Swiper('.header-swiper', swiperConfig);"
+       @mouseenter="swiper?.autoplay.stop()" @mouseleave="swiper?.autoplay.start()"
+       class="relative w-full overflow-hidden py-0.5 h-[72px] md:h-[34px] bg-[#F7EDDD]">
+    <div class="h-full header-swiper">
+      <div class="flex items-center h-full swiper-wrapper">
+        <div class="flex items-center justify-center px-4 text-xs text-center text-black cursor-default header-slide swiper-slide lg:text-base">
+          <div class="hero-text"><p>Check-out our Alaska guide with the best local info! Download <a href="https://cdn.forms-content.sg-form.com/11efc8d7-0e98-11f1-b656-3af73ab25abc" class="underline font-medium">here!</a></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark teal utility bar -->
+  <div class="bg-[#024B5B] py-2"
+       x-data="{
+         subsiteOpen: false, modalOpen: false, userMenuOpen: false,
+         selected: 'Alaska',
+         options: [{ name: 'Alaska', value: 'alaska' }, { name: 'Bahamas', value: 'bahamas' }],
+         selectSubsite(option) {
+           this.selected = option.name; this.subsiteOpen = false;
+           if (option.value === 'bahamas') window.location.href = '/destination/bahamas';
+           else window.location.href = '/destination/alaska';
+         }
+       }">
+    <div class="max-w-[1400px] w-full mx-auto px-4 flex items-center justify-between">
+
+      <!-- Destination switcher -->
+      <div class="relative">
+        <button @click="subsiteOpen = !subsiteOpen" @click.away="subsiteOpen = false"
+                class="flex items-center text-white text-sm font-medium hover:opacity-80 transition-opacity focus:outline-none">
+          <span x-text="selected"></span>
+          <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{'rotate-180': subsiteOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div x-show="subsiteOpen" x-cloak
+             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+             class="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50 overflow-hidden" style="display:none">
+          <template x-for="option in options" :key="option.value">
+            <button @click="selectSubsite(option)" x-text="option.name"
+                    class="block w-full text-left px-4 py-2 text-sm text-[#024b5b] hover:bg-[#e6edef] transition-colors"
+                    :class="{ 'bg-[#F7EDDD]': selected === option.name }"></button>
+          </template>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Cart (static stub — Livewire required in production) -->
+        <div class="w-[42px] flex items-center justify-center cursor-pointer group relative float-right" id="cartSummary"
+             x-data="{ popoverOpen: false }" x-cloak>
+          <button class="p-2 border-0 rounded-md bg-[#E6EDEF] hover:bg-[#d5dce0] relative" @click="popoverOpen = !popoverOpen">
+            <svg class="w-5 h-5 text-[#024B5B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+          </button>
+          <div x-show="popoverOpen" @click.away="popoverOpen=false" x-cloak
+               class="absolute w-[320px] -translate-x-[85%] left-1/3 top-0 mt-12 z-[60] hidden md:block">
+            <div class="p-4 bg-white border shadow-3xl border-neutral-200/70">
+              <div class="flex items-center justify-between pb-4 border-b border-b-gray-200">
+                <h4 class="font-medium leading-none">Shopping cart</h4>
+                <button @click="popoverOpen=false" class="text-gray-400 hover:text-gray-600">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+              <div class="flex items-center justify-center w-full p-6">
+                <p class="text-lg text-center text-gray-600">Your Shopping Cart Is Empty</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sign in button -->
+        <button @click="modalOpen = true"
+                class="flex items-center gap-2 bg-[#D97462] hover:bg-[#C16856] text-black px-4 py-1.5 rounded-md text-sm font-medium transition-colors">
+          <span>Sign in</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <template x-teleport="body">
+      <div x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" @keydown.escape.window="modalOpen = false" x-cloak>
+        <div x-show="modalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             @click="modalOpen = false" class="fixed inset-0 bg-black bg-opacity-50"></div>
+        <div x-show="modalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+             class="relative flex items-center justify-center min-h-screen p-4">
+          <div class="relative bg-white rounded-lg shadow-xl max-w-md w-full p-8">
+            <button @click="modalOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div class="text-center mb-8"><h1 class="text-3xl font-normal">VOYIJ</h1></div>
+            <h2 class="text-2xl font-semibold text-center mb-6">Sign in</h2>
+            <form method="POST" action="https://voyij.com/user/login">
+              <input type="hidden" name="_token" value="">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm text-gray-700 mb-2">Email*</label>
+                  <input type="email" name="email" placeholder="john@email.com" class="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024B5B] bg-gray-50" required>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-700 mb-2">Password*</label>
+                  <input type="password" name="password" placeholder="Enter your password" class="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024B5B] bg-gray-50" required>
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center"><input type="checkbox" name="remember" class="w-4 h-4 text-[#024B5B] border-gray-300 rounded"><span class="ml-2 text-sm text-gray-700">Remember me</span></label>
+                  <a href="/user/forgot-password" class="text-sm text-[#024B5B] hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-[#024B5B] text-white py-3 rounded-md hover:bg-[#013844] transition duration-200 font-medium">Sign In</button>
+              </div>
+            </form>
+            <div class="mt-6 text-center">
+              <p class="text-sm text-gray-600">Don't have an account? <a href="/user/register" class="text-[#024B5B] hover:underline font-medium">Register</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- White main nav -->
+  <header class="bg-white shadow-sm" x-data="{ mobileMenuOpen: false, searchOpen: false }">
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="flex items-center h-16">
+
+        <!-- Logo -->
+        <div class="flex items-center">
+          <a href="/" class="flex items-center">
+            <span class="text-2xl font-bold text-gray-900">VOYIJ</span>
+          </a>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex ml-12">
+          <ul class="flex items-center space-x-2">
+            <li><a href="/" class="text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 block">Home</a></li>
+
+            <!-- Destinations -->
+            <li class="relative" x-data="{ open: false }" @mouseenter="open=true" @mouseleave="open=false">
+              <a href="/destination" class="flex items-center text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 transition-colors">
+                Destinations <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </a>
+              <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0" class="origin-top-right absolute top-full left-0 z-50 min-w-[420px]">
+                <div class="px-4 pb-4 bg-white border shadow-[0_4px_24px_0_rgba(0,0,0,0.15)] border-slate-200">
+                  <ul class="grid grid-cols-2 gap-6">
+                    <li>
+                      <a class="flex items-center py-2 text-slate-800 hover:text-[#024b5b]" href="/destination/alaska"><span class="text-sm font-bold uppercase">Alaska</span></a>
+                      <ul class="space-y-3 pt-3">
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/anchorage">Anchorage</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/juneau">Juneau</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/ketchikan">Ketchikan</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/skagway">Skagway</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/sitka">Sitka</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/fairbanks">Fairbanks</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/seward">Seward</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/alaska/haines">Haines</a></li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a class="flex items-center py-2 text-slate-800 hover:text-[#024b5b]" href="/destination/bahamas"><span class="text-sm font-bold uppercase">Bahamas</span></a>
+                      <ul class="space-y-3 pt-3">
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/bahamas/nassau">Nassau</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/destination/bahamas/exuma">Exuma</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <div class="pt-4 border-t border-gray-200 mt-4 text-center">
+                    <a href="/destination" class="text-sm text-[#024b5b] hover:underline font-semibold">View All Destinations</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Tours & Activities -->
+            <li class="relative" x-data="{ open: false }" @mouseenter="open=true" @mouseleave="open=false">
+              <a href="/category/activities" class="flex items-center text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 transition-colors">
+                Tours &amp; Activities <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </a>
+              <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0" class="origin-top-right absolute top-full left-0 z-50 min-w-[340px]">
+                <div class="px-4 pb-4 bg-white border shadow-[0_4px_24px_0_rgba(0,0,0,0.15)] border-slate-200">
+                  <ul class="space-y-3 pt-4">
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/fishing">Fishing &amp; Charters</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/wildlife">Wildlife &amp; Nature</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/glacier">Glacier Tours</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/kayaking">Kayaking &amp; Water</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/hiking">Hiking &amp; Trekking</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/flightseeing">Flightseeing</a></li>
+                    <li><a class="text-sm hover:text-[#024b5b]" href="/category/activities/cultural">Cultural &amp; History</a></li>
+                  </ul>
+                  <div class="pt-4 border-t border-gray-200 mt-4 text-center">
+                    <a href="/category/activities" class="text-sm text-[#024b5b] hover:underline font-semibold">All Tours &amp; Activities</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Gifts -->
+            <li class="relative" x-data="{ open: false }" @mouseenter="open=true" @mouseleave="open=false">
+              <a href="/category/gifts" class="flex items-center text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 transition-colors">
+                Gifts <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </a>
+              <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-6" x-transition:enter-end="opacity-100 translate-y-0" class="origin-top-right absolute top-full left-0 z-50 min-w-[480px]">
+                <div class="px-4 pb-4 bg-white border shadow-[0_4px_24px_0_rgba(0,0,0,0.15)] border-slate-200">
+                  <ul class="grid grid-cols-2 gap-6 pt-4">
+                    <li>
+                      <span class="text-sm font-bold uppercase text-slate-800">Shop by Type</span>
+                      <ul class="space-y-3 pt-3">
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-jewelry">Jewelry</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-for-the-home">For the Home</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-women-beauty">Beauty</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-apparel">Apparel</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-food-pantry">Food &amp; Pantry</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-art-crafts">Art &amp; Crafts</a></li>
+                      </ul>
+                    </li>
+                    <li>
+                      <span class="text-sm font-bold uppercase text-slate-800">Shop by Who</span>
+                      <ul class="space-y-3 pt-3">
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-women">Women</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-men">Men</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-kids">Kids</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-occasion">Occasion</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b]" href="/category/gifts-ideas">Gift Ideas</a></li>
+                        <li><a class="text-sm hover:text-[#024b5b] font-semibold text-[#024B5B]" href="/madeinalaska">✦ Made In Alaska</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <div class="pt-4 border-t border-gray-200 mt-4 text-center">
+                    <a href="/category/gifts" class="text-sm text-[#024b5b] hover:underline font-semibold">All Gifts</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li><a href="/business" class="text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 block">Shop by store</a></li>
+            <li><a href="/about-us" class="text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 block">About Us</a></li>
+            <li><a href="/blog" class="text-gray-700 hover:text-[#024b5b] font-semibold text-sm px-3 py-2 block">Voyij Blog</a></li>
+          </ul>
+        </nav>
+
+        <!-- Desktop search -->
+        <div class="hidden md:flex items-center ml-auto gap-3">
+          <div x-show="searchOpen" x-cloak class="flex items-center">
+            <form action="/search" method="GET" class="flex">
+              <input type="text" name="q" placeholder="Search…" autofocus
+                     class="border border-gray-300 rounded-l-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#024B5B] w-56">
+              <button type="submit" class="bg-[#024B5B] text-white px-3 py-1.5 rounded-r-md hover:bg-[#013844]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </button>
+            </form>
+          </div>
+          <button @click="searchOpen = !searchOpen" class="text-gray-600 hover:text-[#024b5b] p-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </button>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden ml-auto p-2 text-gray-600">
+          <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div x-show="mobileMenuOpen" x-cloak class="md:hidden border-t border-gray-200 pb-4">
+        <div class="pt-2 space-y-1">
+          <a href="/" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Home</a>
+          <a href="/destination" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Destinations</a>
+          <a href="/category/activities" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Tours &amp; Activities</a>
+          <a href="/category/gifts" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Gifts</a>
+          <a href="/madeinalaska" class="block px-3 py-2 text-sm font-semibold text-[#024B5B]">✦ Made In Alaska</a>
+          <a href="/business" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Shop by store</a>
+          <a href="/about-us" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">About Us</a>
+          <a href="/blog" class="block px-3 py-2 text-sm font-semibold text-gray-700 hover:text-[#024b5b]">Voyij Blog</a>
+          <div class="px-3 pt-2">
+            <form action="/search" method="GET" class="flex">
+              <input type="text" name="q" placeholder="Search…" class="border border-gray-300 rounded-l-md px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-[#024B5B]">
+              <button type="submit" class="bg-[#024B5B] text-white px-3 rounded-r-md"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</header>
+<!-- END HEADER -->
+
+
+<!-- ================================================================
+     MADE IN ALASKA PAGE CONTENT
+     ================================================================ -->
+<div x-data="miaPage()" x-init="init()">
+
+  <!-- ── HERO ─────────────────────────────────────────────────────── -->
+  <section class="mia-hero-bg text-white relative overflow-hidden">
+    <!-- Subtle dot texture -->
+    <div class="absolute inset-0 opacity-[0.04]"
+         style="background-image:radial-gradient(white 1px,transparent 1px);background-size:28px 28px;"></div>
+    <!-- Aurora glow -->
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+         style="background:radial-gradient(circle,rgba(127,188,180,0.18) 0%,transparent 70%);"></div>
+
+    <div class="max-w-[1400px] w-full mx-auto px-4 py-16 md:py-24 relative z-10">
+      <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+
+        <!-- Text column -->
+        <div class="order-2 md:order-1">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-2 h-2 rounded-full bg-[#7fbcb4]"></span>
+            <span class="text-xs font-semibold tracking-[0.12em] uppercase text-[#7fbcb4]">Alaska Division of Economic Development</span>
+          </div>
+
+          <h1 class="font-bold text-white leading-[1.05] tracking-tight mb-5"
+              style="font-size:clamp(42px,6vw,72px);">
+            Made In<br><span style="font-family:'Orange Squash Demo',cursive;font-size:1.1em;color:#7fbcb4;">Alaska</span>
+          </h1>
+
+          <p class="text-white/70 text-lg leading-relaxed mb-8 max-w-xl">
+            Shop products eligible for the Made In Alaska program on Voyij.
+            Look for the Made In Alaska mark to discover Alaska-made goods
+            you can order year-round.
+          </p>
+
+          <div class="flex flex-wrap gap-3">
+            <a href="#products-section"
+               class="bg-[#7fbcb4] hover:bg-[#6aada5] text-white font-semibold px-6 py-3 rounded-md transition-colors inline-flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+              Shop eligible products
+            </a>
+            <button @click="switchView('stores')"
+                    class="border border-white/40 hover:border-white/80 hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-md transition-colors">
+              Browse stores
+            </button>
+          </div>
+        </div>
+
+        <!-- Emblem column -->
+        <div class="order-1 md:order-2 flex flex-col items-center gap-4">
+          <img
+            src="/public/images/made-in-alaska/made-in-alaska.png"
+            alt="Made In Alaska program mark"
+            class="h-64 md:h-72 w-auto object-contain drop-shadow-2xl"
+          >
+
+          <!-- Trust pill -->
+          <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white/80">
+            <svg class="w-3.5 h-3.5 text-[#7fbcb4]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            Eligible products only &bull; Permit status verified
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FILTER BAR (sticky) ──────────────────────────────────────── -->
+  <div class="bg-white border-b border-border sticky top-0 z-40 shadow-sm" style="top:calc(var(--header-offset,110px))">
+    <div class="max-w-[1400px] w-full mx-auto px-4 py-3">
+      <div class="flex flex-wrap items-center gap-3">
+
+        <!-- Search -->
+        <div class="flex items-center gap-2 border border-border rounded-full px-4 py-2 bg-gray-50 focus-within:border-[#024B5B] focus-within:bg-white transition-colors flex-1 min-w-[200px] max-w-xs">
+          <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="search" x-model.debounce.200ms="search"
+                 placeholder="Search Made In Alaska products or stores"
+                 class="bg-transparent text-sm text-gray-700 outline-none w-full placeholder-gray-400">
+        </div>
+
+        <!-- Category chips -->
+        <div class="flex items-center gap-2 overflow-x-auto flex-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <template x-for="cat in categories" :key="cat.value">
+            <button class="filter-chip flex-shrink-0"
+                    :class="{ 'active': category === cat.value }"
+                    @click="category = cat.value"
+                    x-text="cat.label"></button>
+          </template>
+        </div>
+
+        <!-- Sort -->
+        <div class="flex-shrink-0">
+          <select x-model="sort"
+                  class="text-sm font-medium text-gray-700 border border-border rounded-full px-4 py-2 bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#024B5B]">
+            <option value="featured">Featured</option>
+            <option value="newest">New</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+
+        <!-- Products / Stores toggle -->
+        <div class="view-toggle flex items-center flex-shrink-0">
+          <button class="view-toggle-btn" :class="{ 'active': view === 'products' }" @click="switchView('products')">Products</button>
+          <button class="view-toggle-btn" :class="{ 'active': view === 'stores' }"   @click="switchView('stores')">Stores</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT / TRUST (BEFORE product listings) ──────────────────── -->
+  <section class="py-16 bg-white">
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="mb-10">
+        <p class="text-xs font-bold uppercase tracking-[0.1em] text-[#7fbcb4] mb-2">About the Program</p>
+        <h2 class="text-3xl font-bold text-gray-900">What is Made In Alaska?</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <article class="trust-card-accent bg-gray-50 border border-border rounded-xl p-8 relative overflow-hidden">
+          <div class="w-11 h-11 rounded-lg bg-[#e6f2f1] flex items-center justify-center mb-5 text-[#024B5B]">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 mb-3 leading-snug">What is Made In Alaska?</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Made In Alaska is a state-administered program that allows qualifying Alaska-made products to use the official mark. On Voyij, we highlight eligible products so you can shop with confidence.</p>
+        </article>
+        <article class="trust-card-accent bg-gray-50 border border-border rounded-xl p-8 relative overflow-hidden">
+          <div class="w-11 h-11 rounded-lg bg-[#e6f2f1] flex items-center justify-center mb-5 text-[#024B5B]">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 mb-3 leading-snug">How do products qualify?</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Eligibility is tied to program requirements and an active permit. Products shown here are flagged as eligible and associated with a permit verified as active by the Alaska Division of Economic Development.</p>
+        </article>
+        <article class="trust-card-accent bg-gray-50 border border-border rounded-xl p-8 relative overflow-hidden">
+          <div class="w-11 h-11 rounded-lg bg-[#e6f2f1] flex items-center justify-center mb-5 text-[#024B5B]">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 mb-3 leading-snug">Active permit status</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">Permit status can be refreshed automatically against the state registry. If a permit expires, items are removed from this collection while remaining available on Voyij under the store's normal listings.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STORIES (BEFORE product listings) ───────────────────────── -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.1em] text-[#7fbcb4] mb-2">From the Field</p>
+          <h2 class="text-3xl font-bold text-gray-900">Stories</h2>
+          <p class="text-gray-500 text-sm mt-1">Posts from Voyij's blog tagged "Made In Alaska"</p>
+        </div>
+        <a href="/blog?tag=made-in-alaska" class="hidden md:inline-flex items-center gap-1.5 text-sm text-[#024B5B] hover:underline font-semibold">
+          All stories <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <template x-for="story in stories" :key="story.id">
+          <article class="story-card bg-white rounded-xl border border-border overflow-hidden flex flex-col">
+            <div class="aspect-video overflow-hidden bg-gray-100">
+              <img :src="story.image" :alt="story.title" loading="lazy" class="product-img w-full h-full object-cover">
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+              <span class="text-xs font-bold uppercase tracking-widest text-[#7fbcb4] mb-3">Made In Alaska</span>
+              <h3 class="text-base font-semibold text-gray-900 leading-snug mb-2" x-text="story.title"></h3>
+              <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4" x-text="story.excerpt"></p>
+              <a :href="'/blog/' + story.slug"
+                 class="inline-flex items-center gap-1.5 text-sm text-[#024B5B] font-semibold hover:underline">
+                Read story <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED STORES ──────────────────────────────────────────── -->
+  <section class="py-16 bg-white">
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.1em] text-[#7fbcb4] mb-2">Curated Selection</p>
+          <h2 class="text-3xl font-bold text-gray-900">Featured stores</h2>
+          <p class="text-gray-500 text-sm mt-1">Alaska makers with active Made In Alaska permits.</p>
+        </div>
+        <button @click="switchView('stores')" class="hidden md:inline-flex items-center gap-1.5 text-sm text-[#024B5B] hover:underline font-semibold">
+          All stores <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        <template x-for="store in stores.slice(0,3)" :key="store.id">
+          <article class="store-card border border-border rounded-xl p-6 bg-white flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+              <img :src="store.logo" :alt="store.name + ' logo'" loading="lazy"
+                   class="w-14 h-14 rounded-lg object-cover border border-border flex-shrink-0 bg-gray-100">
+              <div class="min-w-0">
+                <div class="font-semibold text-gray-900 text-sm leading-snug" x-text="store.name"></div>
+                <div class="flex items-center gap-2 flex-wrap mt-1">
+                  <span class="text-xs text-gray-500 flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span x-text="store.city + ', AK'"></span>
+                  </span>
+                  <span class="permit-chip" x-text="store.permitNumber"></span>
+                </div>
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1" x-text="store.blurb"></p>
+            <a :href="'/business/' + store.slug"
+               class="inline-flex items-center justify-center gap-2 bg-[#024B5B] hover:bg-[#013844] text-white text-sm font-semibold px-4 py-2.5 rounded-md transition-colors">
+              Shop store <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </article>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRODUCT GRID ──────────────────────────────────────────────── -->
+  <section id="products-section" class="py-16 bg-gray-50" x-show="view === 'products'">
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.1em] text-[#7fbcb4] mb-2">Shop the Collection</p>
+          <h2 class="text-3xl font-bold text-gray-900">Shop eligible products</h2>
+        </div>
+        <p class="text-sm text-gray-500" aria-live="polite">
+          Showing <strong class="text-gray-800 font-semibold" x-text="filteredProducts.length"></strong> eligible products
+        </p>
+      </div>
+
+      <!-- No results -->
+      <div x-show="filteredProducts.length === 0" class="text-center py-20 text-gray-500">
+        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">No products found</h3>
+        <p class="text-sm">Try adjusting your filters or search term.</p>
+      </div>
+
+      <!-- Product grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+        <template x-for="product in filteredProducts" :key="product.id">
+          <article class="product-card bg-white rounded-xl border border-border overflow-hidden flex flex-col" role="listitem">
+
+            <!-- Image + MIA badge -->
+            <div class="relative overflow-hidden bg-gray-100" style="aspect-ratio:4/3">
+              <img :src="product.image" :alt="product.name" loading="lazy"
+                   class="product-img w-full h-full object-cover">
+
+              <!-- MIA badge — placed where Voyij typically puts "New" / "Selling fast" tags -->
+              <div class="absolute bottom-2.5 left-2.5">
+                <span class="mia-badge mia-badge-sm inline-flex items-center gap-1">
+                  <!-- Mini bear icon (simplified paw) -->
+                  <svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <circle cx="5"  cy="5"  r="2.5"/>
+                    <circle cx="10" cy="3.5" r="2.5"/>
+                    <circle cx="15" cy="5"  r="2.5"/>
+                    <ellipse cx="10" cy="13" rx="5.5" ry="4.5"/>
+                  </svg>
+                  Made In Alaska
+                </span>
+              </div>
+
+              <!-- Wishlist (hover) -->
+              <button class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 hover:bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm text-gray-500 hover:text-red-500"
+                      :aria-label="'Add ' + product.name + ' to wishlist'"
+                      @click.prevent="toggleWishlist(product.id)">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              </button>
+            </div>
+
+            <!-- Card body -->
+            <div class="p-4 flex flex-col flex-1">
+              <p class="text-xs text-gray-400 flex items-center gap-1 mb-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span x-text="product.store"></span>
+              </p>
+              <h3 class="text-sm font-semibold text-gray-900 leading-snug flex-1 mb-3" x-text="product.name"></h3>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-base font-bold text-gray-900" x-text="'$' + product.price.toFixed(2).replace(/\.00$/,'')"></span>
+                <span class="text-xs bg-gray-100 text-gray-500 rounded-full px-2 py-0.5 font-medium" x-text="product.city"></span>
+              </div>
+              <div class="flex gap-2">
+                <a :href="'/products/' + product.slug"
+                   class="flex-1 text-center text-xs font-medium py-2.5 px-3 rounded-md border border-border hover:border-[#024B5B] hover:text-[#024B5B] transition-colors">
+                  View
+                </a>
+                <button class="flex-1 text-xs font-semibold py-2.5 px-3 rounded-md bg-[#024B5B] hover:bg-[#013844] text-white transition-colors"
+                        @click="addToCart(product)">
+                  Add to cart
+                </button>
+              </div>
+            </div>
+          </article>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STORES DIRECTORY ──────────────────────────────────────────── -->
+  <section class="py-16 bg-gray-50" x-show="view === 'stores'" x-cloak>
+    <div class="max-w-[1400px] w-full mx-auto px-4">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.1em] text-[#7fbcb4] mb-2">Alaska Makers</p>
+          <h2 class="text-3xl font-bold text-gray-900">Stores with eligible products</h2>
+          <p class="text-gray-500 text-sm mt-1">Every store below carries at least one active Made In Alaska eligible product.</p>
+        </div>
+        <p class="text-sm text-gray-500" aria-live="polite">
+          <strong class="text-gray-800 font-semibold" x-text="filteredStores.length"></strong> stores
+        </p>
+      </div>
+
+      <div x-show="filteredStores.length === 0" class="text-center py-20 text-gray-500">
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">No stores found</h3>
+        <p class="text-sm">Try adjusting your search term.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <template x-for="store in filteredStores" :key="store.id">
+          <article class="store-card bg-white rounded-xl border border-border overflow-hidden flex flex-col">
+            <div class="overflow-hidden bg-gray-100" style="aspect-ratio:16/7">
+              <img :src="store.cover" :alt="store.name" loading="lazy" class="product-img w-full h-full object-cover">
+            </div>
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex items-center gap-3 mb-3">
+                <img :src="store.logo" :alt="store.name + ' logo'" loading="lazy"
+                     class="w-12 h-12 rounded-lg object-cover border border-border flex-shrink-0 bg-gray-100">
+                <div>
+                  <div class="font-semibold text-gray-900 text-sm" x-text="store.name"></div>
+                  <div class="flex items-center gap-2 flex-wrap mt-1">
+                    <span class="text-xs text-gray-500 flex items-center gap-1">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                      <span x-text="store.city + ', Alaska'"></span>
+                    </span>
+                    <span class="permit-chip" x-text="store.permitNumber"></span>
+                    <span class="text-xs bg-green-50 text-green-700 font-semibold rounded-full px-2 py-0.5">✓ Active</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 leading-relaxed flex-1 mb-4" x-text="store.blurb"></p>
+              <div class="flex items-center gap-3">
+                <a :href="'/business/' + store.slug"
+                   class="flex-1 text-center text-sm font-semibold py-2.5 bg-[#024B5B] hover:bg-[#013844] text-white rounded-md transition-colors">
+                  View products
+                </a>
+                <!-- TODO: append ?madeInAlaska=true if route supports filtering -->
+                <span class="text-xs text-gray-400" x-text="store.productCount + ' eligible'"></span>
+              </div>
+            </div>
+          </article>
+        </template>
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- END PAGE CONTENT -->
+
+
+<!-- ================================================================
+     VOYIJ FOOTER — extracted from code.docx
+     In production: @include('layouts.footer') or {include file="footer.tpl"}
+     ================================================================ -->
+<footer class="bg-[#011E24] text-white">
+  <div class="max-w-[1400px] w-full mx-auto px-4 py-12 lg:py-16">
+
+    <!-- Desktop layout -->
+    <div class="hidden lg:flex gap-12">
+      <!-- Regions sidebar -->
+      <div class="flex-shrink-0 w-36">
+        <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Regions</p>
+        <ul class="space-y-3">
+          <li>
+            <a href="/destination/alaska" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+              Alaska
+              <svg class="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="/destination/bahamas" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+              Bahamas
+              <svg class="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 5-column grid -->
+      <div class="grid grid-cols-5 gap-8 flex-1">
+        <!-- Alaska destinations -->
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Alaska</p>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/destination/alaska/anchorage" class="hover:text-primary transition-colors">Anchorage</a></li>
+            <li><a href="/destination/alaska/juneau" class="hover:text-primary transition-colors">Juneau</a></li>
+            <li><a href="/destination/alaska/ketchikan" class="hover:text-primary transition-colors">Ketchikan</a></li>
+            <li><a href="/destination/alaska/skagway" class="hover:text-primary transition-colors">Skagway</a></li>
+            <li><a href="/destination/alaska/sitka" class="hover:text-primary transition-colors">Sitka</a></li>
+            <li><a href="/destination/alaska/fairbanks" class="hover:text-primary transition-colors">Fairbanks</a></li>
+            <li><a href="/destination/alaska/seward" class="hover:text-primary transition-colors">Seward</a></li>
+            <li><a href="/destination/alaska/haines" class="hover:text-primary transition-colors">Haines</a></li>
+          </ul>
+        </div>
+        <!-- Bahamas destinations -->
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Bahamas</p>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/destination/bahamas/nassau" class="hover:text-primary transition-colors">Nassau</a></li>
+            <li><a href="/destination/bahamas/exuma" class="hover:text-primary transition-colors">Exuma</a></li>
+          </ul>
+        </div>
+        <!-- Gifts -->
+        <div class="text-right">
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Gifts</p>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/category/gifts-jewelry" class="hover:text-primary transition-colors">Jewelry</a></li>
+            <li><a href="/category/gifts-for-the-home" class="hover:text-primary transition-colors">For the Home</a></li>
+            <li><a href="/category/gifts-women-beauty" class="hover:text-primary transition-colors">Beauty</a></li>
+            <li><a href="/category/gifts-apparel" class="hover:text-primary transition-colors">Apparel</a></li>
+            <li><a href="/category/gifts-food-pantry" class="hover:text-primary transition-colors">Food &amp; Pantry</a></li>
+            <li><a href="/madeinalaska" class="text-primary hover:text-[#7fbcb4] transition-colors font-medium">Made In Alaska</a></li>
+          </ul>
+        </div>
+        <!-- Tours & Activities -->
+        <div class="text-right">
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Tours &amp; Activities</p>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/category/activities/fishing" class="hover:text-primary transition-colors">Fishing</a></li>
+            <li><a href="/category/activities/wildlife" class="hover:text-primary transition-colors">Wildlife</a></li>
+            <li><a href="/category/activities/glacier" class="hover:text-primary transition-colors">Glacier Tours</a></li>
+            <li><a href="/category/activities/kayaking" class="hover:text-primary transition-colors">Kayaking</a></li>
+            <li><a href="/category/activities/hiking" class="hover:text-primary transition-colors">Hiking</a></li>
+            <li><a href="/category/activities/flightseeing" class="hover:text-primary transition-colors">Flightseeing</a></li>
+          </ul>
+        </div>
+        <!-- Company -->
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-5">Company</p>
+          <ul class="space-y-3 text-sm">
+            <li><a href="/about-us" class="hover:text-primary transition-colors">About Us</a></li>
+            <li><a href="/list-your-business" class="hover:text-primary transition-colors">List Your Business</a></li>
+            <li><a href="/supplier/media-kit" class="hover:text-primary transition-colors">Media Kit</a></li>
+            <li><a href="/blog" class="hover:text-primary transition-colors">Voyij Blog</a></li>
+            <li><a href="/contact" class="hover:text-primary transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile layout -->
+    <div class="lg:hidden">
+      <div class="flex items-center justify-between mb-8">
+        <span class="text-2xl font-bold">VOYIJ</span>
+        <div class="flex gap-4 text-sm">
+          <a href="/destination/alaska" class="hover:text-primary">Alaska</a>
+          <a href="/destination/bahamas" class="hover:text-primary">Bahamas</a>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-8 mb-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">Gifts</p>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/category/gifts-jewelry" class="hover:text-primary">Jewelry</a></li>
+            <li><a href="/category/gifts-for-the-home" class="hover:text-primary">For the Home</a></li>
+            <li><a href="/category/gifts-food-pantry" class="hover:text-primary">Food &amp; Pantry</a></li>
+            <li><a href="/madeinalaska" class="text-primary font-medium">Made In Alaska</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">Activities</p>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/category/activities/fishing" class="hover:text-primary">Fishing</a></li>
+            <li><a href="/category/activities/wildlife" class="hover:text-primary">Wildlife</a></li>
+            <li><a href="/category/activities/glacier" class="hover:text-primary">Glacier Tours</a></li>
+            <li><a href="/category/activities/kayaking" class="hover:text-primary">Kayaking</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-8">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">Destinations</p>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/destination/alaska/juneau" class="hover:text-primary">Juneau</a></li>
+            <li><a href="/destination/alaska/ketchikan" class="hover:text-primary">Ketchikan</a></li>
+            <li><a href="/destination/alaska/skagway" class="hover:text-primary">Skagway</a></li>
+            <li><a href="/destination/alaska/anchorage" class="hover:text-primary">Anchorage</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">Company</p>
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/about-us" class="hover:text-primary">About Us</a></li>
+            <li><a href="/list-your-business" class="hover:text-primary">List Your Business</a></li>
+            <li><a href="/blog" class="hover:text-primary">Voyij Blog</a></li>
+            <li><a href="/contact" class="hover:text-primary">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashed divider -->
+  <div class="border-t border-dashed border-white/10"></div>
+
+  <!-- Bottom bar -->
+  <div class="max-w-[1400px] w-full mx-auto px-4 py-6">
+    <!-- Mobile -->
+    <div class="lg:hidden text-xs text-white/40 space-y-2 text-center">
+      <p>&copy; 2025 Voyij, LLC. All rights reserved.</p>
+      <p><a href="tel:9076001727" class="hover:text-white">907-600-1727</a></p>
+      <p><a href="mailto:hello@voyij.com" class="hover:text-white">hello@voyij.com</a></p>
+      <p class="flex items-center justify-center gap-3">
+        <a href="/privacy-policy" class="hover:text-white">Privacy Policy</a>
+        <span class="border-l border-dashed border-white/20 h-3"></span>
+        <a href="/dmca-policy" class="hover:text-white">DMCA Policy</a>
+      </p>
+    </div>
+    <!-- Desktop -->
+    <div class="hidden lg:flex items-center gap-4 text-xs text-white/40 flex-wrap">
+      <span>&copy; 2025 Voyij, LLC. All rights reserved.</span>
+      <span class="border-l border-dashed border-white/20 h-3"></span>
+      <a href="tel:9076001727" class="hover:text-white transition-colors">907-600-1727</a>
+      <span class="border-l border-dashed border-white/20 h-3"></span>
+      <a href="mailto:hello@voyij.com" class="hover:text-white transition-colors">hello@voyij.com</a>
+      <span class="border-l border-dashed border-white/20 h-3"></span>
+      <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+      <span class="border-l border-dashed border-white/20 h-3"></span>
+      <a href="/dmca-policy" class="hover:text-white transition-colors">DMCA Policy</a>
+      <div class="ml-auto flex items-center gap-3">
+        <!-- Facebook -->
+        <a href="https://facebook.com/voyij" aria-label="Facebook" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+        <!-- Twitter/X -->
+        <a href="https://twitter.com/voyijtravel" aria-label="Twitter" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- Pinterest -->
+        <a href="https://pinterest.com/voyij" aria-label="Pinterest" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="https://instagram.com/voyijcom" aria-label="Instagram" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a href="https://youtube.com/@voyij" aria-label="YouTube" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com/company/voyij" aria-label="LinkedIn" class="hover:text-primary transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- END FOOTER -->
+
+
+<!-- ── Scripts ──────────────────────────────────────────────────────── -->
+<!-- Swiper.js -->
+<script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Alpine.js -->
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script>
+  /* ================================================================
+     VOYIJ — MADE IN ALASKA — Alpine.js Page Component
+     ================================================================
+
+     DATA INTEGRATION NOTES
+     ──────────────────────
+     1. Replace MOCK_PRODUCTS with Blade/Livewire:
+          const MOCK_PRODUCTS = @json($madeInAlaskaProducts);
+        or async:
+          const MOCK_PRODUCTS = await fetch('/api/products?madeInAlaska=true')
+                                       .then(r => r.json())
+                                       .then(d => d.products);
+
+     2. Product fields consumed:
+          { id, name, price, category, store, city, image,
+            isMadeInAlaska, permitNumber, slug, storeSlug }
+
+     3. Store fields consumed:
+          { id, name, city, permitNumber, permitStatus,
+            logo, cover, blurb, slug, productCount }
+
+     4. Permit status refresh (optional, on page load):
+          const permits = MOCK_STORES.map(s=>s.permitNumber).join(',');
+          const status  = await fetch(`/api/permit-status?permits=${permits}`)
+                                  .then(r=>r.json());
+          // Filter out stores with status[permit] === 'expired'
+     ================================================================ */
+
+  const MOCK_PRODUCTS = [
+    { id:1,  name:'Wild Alaskan Sockeye Salmon Fillet',   price:48,   category:'food',     store:'Aurora Wild Seafoods',   city:'Juneau',    image:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0142', slug:'wild-sockeye-salmon',    storeSlug:'aurora-wild-seafoods'  },
+    { id:2,  name:'Alaska Amber Statement Ring',          price:185,  category:'jewelry',  store:'The Local Jeweler',      city:'Skagway',   image:'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0089', slug:'alaska-amber-ring',      storeSlug:'the-local-jeweler'     },
+    { id:3,  name:'Pure Birch Honey — 12 oz',            price:18,   category:'food',     store:'Denali Honey Farm',      city:'Palmer',    image:'https://images.unsplash.com/photo-1471943311424-646960669fbc?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0317', slug:'birch-honey',            storeSlug:'denali-honey-farm'     },
+    { id:4,  name:'Hand-Woven Spruce Root Basket',       price:95,   category:'art',      store:'Fairbanks Fiber Arts',   city:'Fairbanks', image:'https://images.unsplash.com/photo-1578091879955-0fb50cbf24a8?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0204', slug:'spruce-root-basket',     storeSlug:'fairbanks-fiber-arts'  },
+    { id:5,  name:'Spruce Tip Syrup — Small Batch',      price:22,   category:'food',     store:'SE Alaska Goods',        city:'Sitka',     image:'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0178', slug:'spruce-tip-syrup',       storeSlug:'se-alaska-goods'       },
+    { id:6,  name:'Jade & Gold Pendant Necklace',        price:240,  category:'jewelry',  store:'Brooks Range Gems',      city:'Wasilla',   image:'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0099', slug:'jade-gold-pendant',      storeSlug:'brooks-range-gems'     },
+    { id:7,  name:'Kachemak Bay Fleur de Sel',           price:16,   category:'food',     store:'Kachemak Bay Salt Co.',  city:'Homer',     image:'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0256', slug:'kachemak-sea-salt',      storeSlug:'kachemak-bay-salt'     },
+    { id:8,  name:'Puffin Print Canvas Tote',            price:42,   category:'apparel',  store:'Alaska Wild Press',      city:'Juneau',    image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0131', slug:'puffin-canvas-tote',     storeSlug:'alaska-wild-press'     },
+    { id:9,  name:'Talkeetna Birch Syrup — 4 oz',       price:35,   category:'food',     store:'Birch Boys',             city:'Talkeetna', image:'https://images.unsplash.com/photo-1565022536102-f7645c84354a?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0211', slug:'talkeetna-birch-syrup',  storeSlug:'birch-boys'            },
+    { id:10, name:'Northern Lights Pillar Candle',       price:28,   category:'home',     store:'Anchorage Makers Co.',   city:'Anchorage', image:'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0302', slug:'northern-lights-candle', storeSlug:'anchorage-makers'      },
+    { id:11, name:'Ulu Knife with Birchwood Bowl',       price:58,   category:'home',     store:'Heritage Ulus',          city:'Anchorage', image:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0168', slug:'ulu-knife-birchwood',    storeSlug:'heritage-ulus'         },
+    { id:12, name:'Raven Art Print — Alaska Native',     price:65,   category:'art',      store:'Anchorage Artists Co.',  city:'Anchorage', image:'https://images.unsplash.com/photo-1578926288207-a90a5366b2e8?w=600&q=80&auto=format&fit=crop', isMadeInAlaska:true, permitNumber:'MIA-2024-0155', slug:'raven-art-print',        storeSlug:'anchorage-artists'     },
+  ];
+
+  const MOCK_STORES = [
+    { id:1, name:'Aurora Wild Seafoods', city:'Juneau',    permitNumber:'MIA-2024-0142', permitStatus:'active', productCount:14, slug:'aurora-wild-seafoods', logo:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80&auto=format&fit=crop', blurb:'Small-batch wild-caught and smoked Alaska seafood, harvested sustainably from Southeast Alaska waters for over 20 years.' },
+    { id:2, name:'The Local Jeweler',    city:'Skagway',   permitNumber:'MIA-2024-0089', permitStatus:'active', productCount:38, slug:'the-local-jeweler',    logo:'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=80&auto=format&fit=crop', blurb:'Handcrafted fine jewelry by master goldsmith Murat Ozuzon. Each piece features authentic Alaskan gems and amber from local sources.' },
+    { id:3, name:'Birch Boys',           city:'Talkeetna', permitNumber:'MIA-2024-0211', permitStatus:'active', productCount:9,  slug:'birch-boys',           logo:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1565022536102-f7645c84354a?w=800&q=80&auto=format&fit=crop', blurb:'Pure Alaska birch syrup tapped from wild birch trees in the Talkeetna Mountains — made in small batches, just trees, time, and craft.' },
+    { id:4, name:'Fairbanks Fiber Arts', city:'Fairbanks', permitNumber:'MIA-2024-0204', permitStatus:'active', productCount:22, slug:'fairbanks-fiber-arts', logo:'https://images.unsplash.com/photo-1578091879955-0fb50cbf24a8?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1586105251261-72a756497a11?w=800&q=80&auto=format&fit=crop', blurb:'Cooperative of Interior Alaska weavers producing traditional and contemporary fiber art — baskets, textiles, and wearable pieces.' },
+    { id:5, name:'Heritage Ulus',        city:'Anchorage', permitNumber:'MIA-2024-0168', permitStatus:'active', productCount:11, slug:'heritage-ulus',        logo:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1556910638-89a86c4a3e5d?w=800&q=80&auto=format&fit=crop', blurb:'Handmade ulu knives and kitchen tools crafted from Alaskan birch, with blades hand-ground in our Anchorage workshop.' },
+    { id:6, name:'Brooks Range Gems',    city:'Wasilla',   permitNumber:'MIA-2024-0099', permitStatus:'active', productCount:29, slug:'brooks-range-gems',   logo:'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=120&q=80&auto=format&fit=crop', cover:'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80&auto=format&fit=crop', blurb:'Alaska jade, garnet, and gold jewelry. Every stone sourced from Alaska mineral deposits and hand-set in our Wasilla studio.' },
+  ];
+
+  const MOCK_STORIES = [
+    { id:1, title:"Inside Alaska's Wild Salmon Harvest",  excerpt:"How Aurora Wild Seafoods brings the world's finest salmon to your table, straight from Southeast Alaska's pristine waters — and what the Made In Alaska mark means for the fishermen who earn it.", image:'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80&auto=format&fit=crop', slug:'inside-alaska-wild-salmon-harvest' },
+    { id:2, title:"A Goldsmith's Life in Skagway",        excerpt:"Master jeweler Murat Ozuzon talks about working with Alaska jade, amber, and glacially-sourced gold in his downtown Skagway workshop — and why he pursued Made In Alaska certification.",  image:'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800&q=80&auto=format&fit=crop', slug:'goldsmith-life-skagway' },
+    { id:3, title:"The Birch Syrup Renaissance",          excerpt:"Meet the small-batch producers in the Talkeetna Mountains bringing birch syrup back to Alaskan kitchens — and tables around the world — one slow-boiled barrel at a time.",                       image:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&q=80&auto=format&fit=crop', slug:'birch-syrup-renaissance' },
+  ];
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('miaPage', () => ({
+      view:     'products',
+      category: 'all',
+      sort:     'featured',
+      search:   '',
+      products: MOCK_PRODUCTS,
+      stores:   MOCK_STORES,
+      stories:  MOCK_STORIES,
+      categories: [
+        { label:'All',              value:'all'     },
+        { label:'Food & Pantry',    value:'food'    },
+        { label:'Jewelry',          value:'jewelry' },
+        { label:'Gifts',            value:'gifts'   },
+        { label:'For the Home',     value:'home'    },
+        { label:'Art & Crafts',     value:'art'     },
+        { label:'Apparel',          value:'apparel' },
+        { label:'Health & Beauty',  value:'beauty'  },
+      ],
+
+      get filteredProducts() {
+        let list = this.products;
+        if (this.category !== 'all')
+          list = list.filter(p => p.category === this.category);
+        if (this.search.trim()) {
+          const q = this.search.toLowerCase().trim();
+          list = list.filter(p =>
+            p.name.toLowerCase().includes(q) ||
+            p.store.toLowerCase().includes(q) ||
+            p.city.toLowerCase().includes(q)
+          );
+        }
+        if (this.sort === 'price-low')  return [...list].sort((a,b) => a.price - b.price);
+        if (this.sort === 'price-high') return [...list].sort((a,b) => b.price - a.price);
+        return list;
+      },
+
+      get filteredStores() {
+        if (!this.search.trim()) return this.stores;
+        const q = this.search.toLowerCase().trim();
+        return this.stores.filter(s =>
+          s.name.toLowerCase().includes(q) ||
+          s.city.toLowerCase().includes(q)
+        );
+      },
+
+      switchView(v) {
+        this.view = v;
+        this.$nextTick(() => {
+          const el = v === 'products'
+            ? document.getElementById('products-section')
+            : document.querySelector('[x-show="view === \'stores\'"]');
+          if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+      },
+
+      toggleWishlist(id) {
+        /* TODO: POST /api/wishlist { productId: id } */
+        console.log('Wishlist toggled for product', id);
+      },
+
+      addToCart(product) {
+        /* TODO: Livewire dispatch: this.$dispatch('retailProductAddedToCart', { productId: product.id }) */
+        console.log('Add to cart:', product.name);
+        // Stub feedback
+        const btn = event.target;
+        const orig = btn.textContent;
+        btn.textContent = 'Added ✓';
+        btn.classList.add('bg-green-600');
+        btn.classList.remove('bg-[#024B5B]');
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.classList.remove('bg-green-600');
+          btn.classList.add('bg-[#024B5B]');
+        }, 1500);
+      },
+
+      init() {
+        /* TODO: On mount, optionally refresh permit status:
+          const permits = this.stores.map(s => s.permitNumber).join(',');
+          fetch(`/api/permit-status?permits=${permits}`)
+            .then(r => r.json())
+            .then(statusMap => {
+              this.stores = this.stores.filter(s => statusMap[s.permitNumber] === 'active');
+              this.products = this.products.filter(p =>
+                this.stores.some(s => s.permitNumber === p.permitNumber)
+              );
+            });
+        */
+      },
+    }));
+  });
+</script>
+
+</body>
+</html>
